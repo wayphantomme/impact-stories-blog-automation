@@ -1,0 +1,5 @@
+Next step
+Set up your .env with DATABASE_URL (Neon), 
+GEMINI_API_KEY, UNSPLASH_ACCESS_KEY, CRON_SECRET, 
+API_SECRET, then run npm run dev to test locally — 
+or push to GitHub and deploy to Vercel.

@@ -2,25 +2,150 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1e293b;
+  --muted: #64748b;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
+  --border: #e2e8f0;
+  --surface: #f8fafc;
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.07);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+  --shadow-blue: 0 4px 20px -4px rgb(37 99 235 / 0.25);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-border: var(--border);
+  --color-surface: var(--surface);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Prose styles ---- */
+
+.prose-impact h1 {
+  display: none;
+}
+
+.prose-impact h2 {
+  margin-top: 2.25rem;
+  margin-bottom: 0.875rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+  letter-spacing: -0.015em;
+}
+
+.prose-impact h3 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.prose-impact p {
+  margin-bottom: 1.1rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.prose-impact ul,
+.prose-impact ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  color: var(--muted);
+}
+
+.prose-impact li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+
+.prose-impact blockquote {
+  margin: 1.75rem 0;
+  border-left: 4px solid var(--primary);
+  padding: 0.5rem 1.25rem;
+  background: var(--primary-light);
+  border-radius: 0 0.5rem 0.5rem 0;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.prose-impact a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+.prose-impact a:hover {
+  color: var(--primary-hover);
+}
+
+.prose-impact code {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.3rem;
+  padding: 0.15em 0.4em;
+  font-size: 0.875em;
+  font-family: var(--font-geist-mono), monospace;
+  color: var(--primary);
+}
+
+.prose-impact pre {
+  background: #0f172a;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.prose-impact pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.875rem;
+  color: #e2e8f0;
+}
+
+.prose-impact strong {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.prose-impact hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* ---- Skeleton loader ---- */
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.skeleton {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  animation: pulseSubtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

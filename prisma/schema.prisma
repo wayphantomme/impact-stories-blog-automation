@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  content         String   @db.Text
+  metaDescription String   @map("meta_description") @db.VarChar(160)
+  imageUrl        String   @map("image_url")
+  imageAlt        String   @map("image_alt")
+  author          String   @default("Wayan Phantom Megaditha")
+  category        String
+  createdAt       DateTime @default(now()) @map("created_at")
+  publishedAt     DateTime @default(now()) @map("published_at")
+
+  @@index([category])
+  @@index([publishedAt(sort: Desc)])
+  @@map("posts")
+}
