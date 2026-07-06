@@ -5,11 +5,9 @@
 **Live Demo:** [impact-stories-blog.vercel.app](https://impact-stories-blog.vercel.app)
 
 <!-- Screenshots: cropped previews of the app (referencing files in public/images/) -->
-<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;margin-bottom:18px">
-  <img src="https://raw.githubusercontent.com/wayphantomme/impact-stories-blog-automation/main/public/images/home-page.png" alt="Home - Impact Stories" style="width:32%;min-width:220px;object-fit:cover;height:200px;border-radius:6px;border:1px solid #eaeaea" />
-  <img src="https://raw.githubusercontent.com/wayphantomme/impact-stories-blog-automation/main/public/images/blog-page.png" alt="Blog listing - Impact Stories" style="width:32%;min-width:220px;object-fit:cover;height:200px;border-radius:6px;border:1px solid #eaeaea" />
-  <img src="https://raw.githubusercontent.com/wayphantomme/impact-stories-blog-automation/main/public/images/post.png" alt="Post view - Impact Stories" style="width:32%;min-width:220px;object-fit:cover;height:200px;border-radius:6px;border:1px solid #eaeaea" />
-</div>
+![Home - Impact Stories](./public/images/home-page.png)
+![Blog listing - Impact Stories](./public/images/blog-page.png)
+![Post view - Impact Stories](./public/images/post.png)
 
 ---
 
