@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/Hero";
 import { LatestPosts } from "@/components/home/LatestPosts";
+import { KeyBenefits } from "@/components/home/KeyBenefits";
 import { CallToAction } from "@/components/home/CallToAction";
 import { getPosts } from "@/lib/posts";
 
@@ -23,6 +24,7 @@ export default async function HomePage() {
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       <Hero />
       <LatestPosts posts={posts} />
+      <KeyBenefits />
       <CallToAction />
     </div>
   );

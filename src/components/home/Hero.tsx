@@ -10,8 +10,8 @@ const HERO_IMAGES = [
     alt: "Children smiling together",
   },
   {
-    url: "https://images.unsplash.com/photo-1593113580332-ce288d8b2e16?w=1600&h=900&fit=crop", // helping hands
-    alt: "People working together",
+    url: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1600&h=900&fit=crop", // global humanitarian
+    alt: "Humanitarian aid and global impact",
   },
   {
     url: "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1600&h=900&fit=crop", // community care
