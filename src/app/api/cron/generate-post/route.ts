@@ -10,11 +10,32 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-type CronStage = "pick-category" | "generate-content" | "fetch-image" | "save-post";
+type CronStage =
+  | "pick-category"
+  | "generate-content"
+  | "fetch-image"
+  | "save-post";
 
-function pickCategory(): (typeof CATEGORIES)[number] {
+const CRON_SLOT_BY_SCHEDULE: Record<string, number> = {
+  "0 0 * * *": 0,
+  "0 6 * * *": 1,
+  "0 12 * * *": 2,
+  "0 18 * * *": 3,
+};
+
+function getCronSlot(request: NextRequest, now: Date): number {
+  const schedule = request.headers.get("x-vercel-cron-schedule");
+  if (schedule && schedule in CRON_SLOT_BY_SCHEDULE) {
+    return CRON_SLOT_BY_SCHEDULE[schedule];
+  }
+
+  return Math.floor(now.getUTCHours() / 6);
+}
+
+function pickCategory(request: NextRequest): (typeof CATEGORIES)[number] {
   const today = new Date();
-  const index = today.getDate() % CATEGORIES.length;
+  const slot = getCronSlot(request, today);
+  const index = (today.getUTCDate() * 4 + slot) % CATEGORIES.length;
   return CATEGORIES[index];
 }
 
@@ -26,7 +47,7 @@ export async function GET(request: NextRequest) {
   let stage: CronStage = "pick-category";
 
   try {
-    const category = pickCategory();
+    const category = pickCategory(request);
 
     stage = "generate-content";
     const generated = await generateBlogPost(category);
@@ -50,6 +71,7 @@ export async function GET(request: NextRequest) {
       success: true,
       slug: post.slug,
       title: post.title,
+      category: post.category,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";

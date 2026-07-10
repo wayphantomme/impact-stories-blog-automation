@@ -38,7 +38,7 @@
 
 #### The Solution
 An **AI-powered content automation engine** that:
-- ✅ Generates SEO-optimized articles **automatically every day at 09:00**
+- ✅ Generates SEO-optimized articles **automatically 4 times per day**
 - ✅ Covers trending global topics (climate, AI, sustainability, global issues)
 - ✅ Requires **zero manual intervention** after setup
 - ✅ Builds organic traffic and improves search rankings
@@ -65,8 +65,8 @@ An **AI-powered content automation engine** that:
 - 🔗 **SEO-Optimized** - Each post is structured for search visibility
 
 ### For Organizations
-- 🤖 **AI Content Generation** - Powered by Google Gemini 3.1 Flash
-- ⏰ **Scheduled Automation** - Daily posts at 09:00 UTC (configurable)
+- 🤖 **AI Content Generation** - Powered by Google Gemini 2.5 Flash by default
+- ⏰ **Scheduled Automation** - Posts at 00:00, 06:00, 12:00, and 18:00 UTC
 - 📊 **Database-Backed** - PostgreSQL for reliability and scaling
 - 🚀 **One-Click Deploy** - Vercel integration, instant CI/CD
 - 🎨 **Donation CTA** - Optional call-to-action for fundraising
@@ -86,7 +86,7 @@ An **AI-powered content automation engine** that:
 
 ```mermaid
 graph LR
-    A["⏰ Cron Trigger<br/>(Daily 09:00)"] -->|Calls| B["🤖 AI Engine<br/>(Gemini 3.1 Flash)"]
+    A["⏰ Cron Trigger<br/>(00/06/12/18 UTC)"] -->|Calls| B["🤖 AI Engine<br/>(Gemini 2.5 Flash)"]
     B -->|Generates| C["📝 Content Bundle<br/>(Title, Content, Meta)"]
     C -->|Stores| D[("🗄️ PostgreSQL Database<br/>(Neon Hosted)")]
     D -->|Powers| E["🌐 Next.js Frontend<br/>(Blog + Search + Filter)"]
@@ -305,7 +305,7 @@ npm run lint           # Run ESLint
 
 ### Automated Daily Generation
 
-The system runs a **cron job at 09:00 UTC daily** that:
+The system runs **4 cron jobs per day at 00:00, 06:00, 12:00, and 18:00 UTC**. The same route handles each run and rotates categories by schedule slot.
 
 1. **Triggers AI Generation**
    - Sends prompt to Google Gemini (`gemini-2.5-flash` by default)
@@ -360,7 +360,19 @@ The system runs a **cron job at 09:00 UTC daily** that:
   "crons": [
     {
       "path": "/api/cron/generate-post",
-      "schedule": "0 9 * * *"
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/generate-post",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/generate-post",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/generate-post",
+      "schedule": "0 18 * * *"
     }
   ]
 }
