@@ -16,7 +16,7 @@ const generatedPostSchema = z.object({
 
 async function main() {
   const apiKey = process.env.GEMINI_API_KEY!;
-  const modelName = process.env.GEMINI_MODEL ?? "gemini-3.1-flash-lite";
+  const modelName = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
   const category = CATEGORIES[new Date().getDate() % CATEGORIES.length];
 
   console.log(`→ Model: ${modelName}`);

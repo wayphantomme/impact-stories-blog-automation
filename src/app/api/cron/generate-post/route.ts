@@ -2,9 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyCronSecret } from "@/lib/auth";
 import { CATEGORIES } from "@/lib/categories";
 import { generateBlogPost } from "@/lib/gemini";
-import { createPost, getPosts } from "@/lib/posts";
+import { createPost } from "@/lib/posts";
 import { slugify } from "@/lib/slugify";
 import { fetchUnsplashImage } from "@/lib/unsplash";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+
+type CronStage = "pick-category" | "generate-content" | "fetch-image" | "save-post";
 
 function pickCategory(): (typeof CATEGORIES)[number] {
   const today = new Date();
@@ -17,11 +23,18 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  let stage: CronStage = "pick-category";
+
   try {
     const category = pickCategory();
+
+    stage = "generate-content";
     const generated = await generateBlogPost(category);
+
+    stage = "fetch-image";
     const imageUrl = await fetchUnsplashImage(generated.imageQuery, category);
 
+    stage = "save-post";
     const post = await createPost({
       title: generated.title,
       slug: slugify(generated.title),
@@ -39,9 +52,11 @@ export async function GET(request: NextRequest) {
       title: post.title,
     });
   } catch (error) {
-    console.error("Cron generation failed:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("Cron generation failed:", { stage, error });
+
     return NextResponse.json(
-      { error: "Failed to generate post" },
+      { error: "Failed to generate post", stage, message },
       { status: 500 },
     );
   }

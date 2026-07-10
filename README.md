@@ -220,11 +220,14 @@ Create a `.env.local` file:
 DATABASE_URL=postgresql://user:password@host:port/dbname
 
 # AI & Content APIs
-NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key
+GEMINI_API_KEY=your_gemini_api_key
+# Optional. Defaults to gemini-2.5-flash when omitted.
+GEMINI_MODEL=gemini-2.5-flash
 UNSPLASH_ACCESS_KEY=your_unsplash_access_key
 
 # Blog Configuration
-BLOG_ADMIN_SECRET=your_admin_secret_here
+API_SECRET=your_admin_secret_here
+CRON_SECRET=your_random_cron_secret_here
 ```
 
 4. **Initialize database**
@@ -305,7 +308,7 @@ npm run lint           # Run ESLint
 The system runs a **cron job at 09:00 UTC daily** that:
 
 1. **Triggers AI Generation**
-   - Sends prompt to Google Gemini 3.1 Flash
+   - Sends prompt to Google Gemini (`gemini-2.5-flash` by default)
    - Specifies topic categories (AI, sustainability, global issues, etc.)
    - Requests: title, slug, content (2000+ words), meta description
 
@@ -342,7 +345,8 @@ The system runs a **cron job at 09:00 UTC daily** that:
    - Select "Next.js" framework
 
 2. **Set Environment Variables**
-   - Add `DATABASE_URL`, `NEXT_PUBLIC_GEMINI_API_KEY`, `UNSPLASH_ACCESS_KEY`
+   - Add `DATABASE_URL`, `GEMINI_API_KEY`, `UNSPLASH_ACCESS_KEY`, `CRON_SECRET`, and `API_SECRET`
+   - Do not use `NEXT_PUBLIC_GEMINI_API_KEY`; Gemini is called from server code and the key must stay private.
 
 3. **Deploy**
    - Vercel will auto-build and deploy on every commit to `main`
@@ -351,24 +355,18 @@ The system runs a **cron job at 09:00 UTC daily** that:
 
 **Option 1: Vercel Crons** (Recommended)
 ```typescript
-// app/api/cron/generate-post/route.ts
-export const runtime = 'nodejs';
-
-export async function GET(req: Request) {
-  // Verify cron secret
-  if (req.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
-    return new Response('Unauthorized', { status: 401 });
-  }
-
-  // Trigger AI post generation
-  const post = await generateBlogPost();
-  return Response.json({ success: true, post });
+// vercel.json
+{
+  "crons": [
+    {
+      "path": "/api/cron/generate-post",
+      "schedule": "0 9 * * *"
+    }
+  ]
 }
-
-export const config = {
-  schedule: '0 9 * * *', // Daily at 09:00 UTC
-};
 ```
+
+Vercel sends `CRON_SECRET` as `Authorization: Bearer <secret>` when the variable is configured in the Production environment. After changing environment variables, redeploy the production deployment.
 
 **Option 2: External Services**
 - [EasyCron](https://www.easycron.com/) - Free tier available
