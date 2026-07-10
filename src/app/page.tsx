@@ -3,6 +3,7 @@ import { Hero } from "@/components/home/Hero";
 import { LatestPosts } from "@/components/home/LatestPosts";
 import { KeyBenefits } from "@/components/home/KeyBenefits";
 import { CallToAction } from "@/components/home/CallToAction";
+import { PartnerLogos } from "@/components/home/PartnerLogos";
 import { getPosts } from "@/lib/posts";
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default async function HomePage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       <Hero />
+      <PartnerLogos />
       <LatestPosts posts={posts} />
       <KeyBenefits />
       <CallToAction />
